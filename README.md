@@ -111,30 +111,30 @@
   <td align="center"><b>📋 岗位管理</b></td>
 </tr>
 <tr>
-  <td><img src="screenshots/thumb/dashboard.png" alt="数据看板" width="100%"/></td>
-  <td><img src="screenshots/thumb/jds.png" alt="岗位管理" width="100%"/></td>
+  <td><img src="screenshots/dashboard.png" alt="数据看板" width="100%"/></td>
+  <td><img src="screenshots/jds.png" alt="岗位管理" width="100%"/></td>
 </tr>
 <tr>
   <td align="center"><b>📄 简历管理</b></td>
   <td align="center"><b>👤 候选人库</b></td>
 </tr>
 <tr>
-  <td><img src="screenshots/thumb/resumes.png" alt="简历管理" width="100%"/></td>
-  <td><img src="screenshots/thumb/candidates.png" alt="候选人库" width="100%"/></td>
+  <td><img src="screenshots/resumes.png" alt="简历管理" width="100%"/></td>
+  <td><img src="screenshots/candidates.png" alt="候选人库" width="100%"/></td>
 </tr>
 <tr>
   <td align="center"><b>🎙️ 面试流水线</b></td>
   <td align="center"><b>💰 Offer 管理</b></td>
 </tr>
 <tr>
-  <td><img src="screenshots/thumb/interviews.png" alt="面试流水线" width="100%"/></td>
-  <td><img src="screenshots/thumb/offers.png" alt="Offer管理" width="100%"/></td>
+  <td><img src="screenshots/interviews.png" alt="面试流水线" width="100%"/></td>
+  <td><img src="screenshots/offers.png" alt="Offer管理" width="100%"/></td>
 </tr>
 <tr>
   <td align="center" colspan="2"><b>🚀 入职管理</b></td>
 </tr>
 <tr>
-  <td colspan="2" align="center"><img src="screenshots/thumb/onboarding.png" alt="入职管理" width="50%"/></td>
+  <td colspan="2" align="center"><img src="screenshots/onboarding.png" alt="入职管理" width="50%"/></td>
 </tr>
 </table>
 
