@@ -1,0 +1,51 @@
+# ── Python ──
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# ── 数据库 ──
+*.db
+*.db-shm
+*.db-wal
+checkpoints.db*
+recruit_agent.db*
+recruitment.db*
+
+# ── 环境变量 ──
+backend/.env
+
+# ── Node ──
+node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/src/.vite/
+*.tsbuildinfo
+
+# ── 上传的文件（测试用） ──
+backend/uploads/*
+uploads/*
+!backend/uploads/.gitkeep
+
+# ── 临时文件/生成物 ──
+backend/output/
+backend/data/
+backend/evaluations/
+backend/*.json
+!backend/requirements.txt
+*.sh
+seed_data.py
+force_jd.py
+
+# ── 操作系统 ──
+.DS_Store
+Thumbs.db
+
+# ── IDE ──
+.idea/
+.vscode/
+*.swp
+*.swo

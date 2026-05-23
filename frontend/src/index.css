@@ -1,0 +1,49 @@
+/* ─── 全局样式 ─── */
+* {
+  box-sizing: border-box;
+}
+
+/* 侧边栏主题切换按钮悬停效果 */
+.sidebar-theme-btn:hover {
+  background: rgba(0, 0, 0, 0.04) !important;
+}
+
+/* 主题选项悬停 */
+.theme-option:hover {
+  background: rgba(0, 0, 0, 0.04) !important;
+}
+
+/* 平滑滚动 */
+html {
+  scroll-behavior: smooth;
+}
+
+/* antd Table 行间距 */
+.ant-table-tbody > tr > td {
+  padding: 10px 12px !important;
+}
+
+/* Card 阴影柔和过渡 */
+.ant-card {
+  transition: box-shadow 0.25s ease;
+}
+.ant-card:hover {
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06) !important;
+}
+
+/* 侧边栏滚动条美化 */
+.ant-layout-sider::-webkit-scrollbar {
+  width: 4px;
+}
+.ant-layout-sider::-webkit-scrollbar-track {
+  background: transparent;
+}
+.ant-layout-sider::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 2px;
+}
+
+/* Modal 动画优化 */
+.ant-modal {
+  animation-duration: 0.2s !important;
+}
