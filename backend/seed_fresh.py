@@ -67,11 +67,11 @@ def run():
 
     # ── 4. 面试 ──
     interviews = [
-        (resume_ids[0], jd_ids[0], "first",  "张面试官", "passed",  now+datetime.timedelta(hours=2)),
-        (resume_ids[0], jd_ids[0], "second", "李面试官", "passed",  now+datetime.timedelta(days=1)),
-        (resume_ids[2], jd_ids[1], "first",  "产品总监", "passed",  now+datetime.timedelta(hours=3)),
+        (resume_ids[0], jd_ids[0], "first",  "张面试官", "completed", now+datetime.timedelta(hours=2)),
+        (resume_ids[0], jd_ids[0], "second", "李面试官", "completed", now+datetime.timedelta(days=1)),
+        (resume_ids[2], jd_ids[1], "first",  "产品总监", "completed", now+datetime.timedelta(hours=3)),
         (resume_ids[3], jd_ids[2], "first",  "架构师",   "pending", now+datetime.timedelta(days=2)),
-        (resume_ids[5], jd_ids[3], "first",  "测试主管", "passed",  now+datetime.timedelta(hours=1)),
+        (resume_ids[5], jd_ids[3], "first",  "测试主管", "completed", now+datetime.timedelta(hours=1)),
         (resume_ids[0], jd_ids[0], "hr",     "HR张",     "pending", now+datetime.timedelta(days=2,hours=3)),
     ]
     name_map = {resume_ids[i]: resumes[i][0] for i in range(len(resumes))}
