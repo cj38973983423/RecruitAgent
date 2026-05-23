@@ -36,6 +36,7 @@ def node_check_and_generate(state: JDWorkflowState) -> dict:
     """节点：AI 增强原始需求 → 直接生成 JD（跳过多轮澄清）
 
     无论需求多模糊，都用 AI 技能直接增强后生成 JD。
+    当需求模糊时自动联网搜索补充行业上下文。
     """
     request_id = state["request_id"]
     db = SessionLocal()
@@ -53,25 +54,41 @@ def node_check_and_generate(state: JDWorkflowState) -> dict:
             return state  # 直接透传
 
         # ── AI 增强：用技能把模糊需求变成完整需求描述 ──
-        logger.info(f"🧠 AI 正在增强需求 {request_id}: {raw_text[:50]}...")
+        logger.info(f"[需求增强] AI 正在增强需求 {request_id}: {raw_text[:50]}...")
+
+        # 判断需求是否过于简短模糊——需要联网搜索补充
+        need_web = len(raw_text.strip()) < 80
+        web_context = ""
+        if need_web:
+            logger.info(f"[需求增强] 原始需求过短 ({len(raw_text.strip())}字)，触发联网搜索")
+            try:
+                from app.services.jd_service import web_search_jd
+                query = f"招聘 {raw_text.strip()[:60]} 岗位职责 任职要求"
+                search_results = web_search_jd(query)
+                if search_results:
+                    snippets = []
+                    for r in search_results:
+                        s = r.get("snippet", "")
+                        if s:
+                            snippets.append(f"- {r.get('title', '')}: {s[:300]}")
+                    web_context = "\n\n【联网搜索到的行业参考信息】:\n" + "\n".join(snippets[:5])
+            except Exception as e:
+                logger.warning(f"[需求增强] 联网搜索失败: {e}")
 
         enhance_prompt = f"""你是一个资深的招聘专家和 JD 写作专家。
 
 直接输出补充完善后的招聘需求，不要任何开场白或解释。
 
 原始需求：{raw_text}
+{web_context}
 
-请基于这个模糊需求，发挥你的行业知识，生成一份完整的、专业的招聘需求描述。
-注意不要问用户问题，直接补充缺失信息。""".strip()
+请基于这个模糊需求，发挥你的行业知识和联网参考信息，生成一份完整的、专业的招聘需求描述。
+注意：
+1. 不要问用户问题，直接补充缺失信息
+2. 输出必须**大幅扩充**原始需求，不能和原始需求雷同
+3. 包含岗位职责、任职要求、技术栈、团队规模等关键信息""".strip()
 
-        try:
-            finalized_text = call_llm(enhance_prompt, timeout=120)
-            if not finalized_text or len(finalized_text.strip()) < 20:
-                logger.warning(f"AI 增强输出过短，使用原始需求")
-                finalized_text = raw_text
-        except Exception as e:
-            logger.warning(f"AI 增强需求失败: {e}")
-            finalized_text = raw_text
+        finalized_text = _call_llm_with_retry(enhance_prompt, raw_text, max_retries=2)
 
         req.finalized_requirements = finalized_text
         req.is_clarified = True
@@ -87,6 +104,34 @@ def node_check_and_generate(state: JDWorkflowState) -> dict:
 
     finally:
         db.close()
+
+
+def _call_llm_with_retry(prompt: str, original_text: str, max_retries: int = 2) -> str:
+    """调用 LLM 并校验输出不与原文雷同，最多重试 max_retries 次"""
+    from app.services.llm_service import call_llm
+    from app.services.jd_service import _is_identical_output
+
+    for attempt in range(max_retries + 1):
+        try:
+            text = call_llm(prompt, timeout=120)
+            if not text or len(text.strip()) < 20:
+                logger.warning(f"[LLM重试] 第 {attempt+1} 次输出过短")
+                prompt += f"\n\n⚠️ 警告：上轮输出太短！请生成至少 300 字的完整招聘需求。"
+                continue
+
+            if _is_identical_output(text, original_text):
+                logger.warning(f"[LLM重试] 第 {attempt+1} 次输出与原文雷同")
+                prompt += f"\n\n⚠️ 警告：上轮输出和原始需求几乎一模一样！必须重写，使用不同的措辞，补充行业信息，至少写 300 字。"
+                continue
+
+            logger.info(f"[LLM重试] 第 {attempt+1} 次尝试成功 ({len(text)}字)")
+            return text
+        except Exception as e:
+            logger.warning(f"[LLM重试] 第 {attempt+1} 次调用异常: {e}")
+
+    # 全失败，至少比原文长一点
+    logger.warning(f"[LLM重试] 全部失败，返回带扩展的原始文本")
+    return f"{original_text}\n\n（系统自动补充：该岗位需要相关专业背景和经验。）"
 
 
 def node_jd_generation(state: JDWorkflowState) -> dict:
