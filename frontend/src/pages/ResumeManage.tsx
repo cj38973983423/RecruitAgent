@@ -54,6 +54,7 @@ const ResumeManage: React.FC = () => {
       const groups = data?.groups || {};
       Object.entries(groups).forEach(([dept, jds]: any) => {
         (jds as any[]).forEach((jd: any) => {
+          if (jd.is_filled) return; // 已招满的不显示在岗位选择中
           options.push({ id: jd.id, label: `${jd.title || jd.position_name}（${dept}）` });
         });
       });
