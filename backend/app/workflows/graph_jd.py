@@ -83,10 +83,16 @@ def node_check_and_generate(state: JDWorkflowState) -> dict:
 {web_context}
 
 请基于这个模糊需求，发挥你的行业知识和联网参考信息，生成一份完整的、专业的招聘需求描述。
+
 注意：
 1. 不要问用户问题，直接补充缺失信息
 2. 输出必须**大幅扩充**原始需求，不能和原始需求雷同
-3. 包含岗位职责、任职要求、技术栈、团队规模等关键信息""".strip()
+3. 至少包含以下板块（用 Markdown 标题 `### ` 分隔）：
+   - 岗位职责（编号列表 1. 2. 3. ...）
+   - 任职要求（分"基本要求"和"加分项"）
+   - 技能要求（分 P0/P1/P2）
+   - 团队规模和汇报关系
+   - 薪资范围""".strip()
 
         finalized_text = _call_llm_with_retry(enhance_prompt, raw_text, max_retries=2)
 
@@ -131,7 +137,20 @@ def _call_llm_with_retry(prompt: str, original_text: str, max_retries: int = 2) 
 
     # 全失败，至少比原文长一点
     logger.warning(f"[LLM重试] 全部失败，返回带扩展的原始文本")
-    return f"{original_text}\n\n（系统自动补充：该岗位需要相关专业背景和经验。）"
+    return f"""### 岗位职责
+1. 岗位职能待根据业务需求进一步明确
+2. 参与相关技术方案的设计与实施
+
+### 任职要求
+- 相关领域工作经验
+- 良好的团队协作能力
+
+### 技能要求
+- **P0**: 核心专业技能
+- **P1**: 工程实践能力
+- **P2**: 管理/跨部门协作
+
+*（原始需求：{original_text}）*"""
 
 
 def node_jd_generation(state: JDWorkflowState) -> dict:
