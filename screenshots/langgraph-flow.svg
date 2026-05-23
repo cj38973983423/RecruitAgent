@@ -1,0 +1,314 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1800" width="1200" height="1800" style="background:#f8fafc;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#64748b"/>
+    </marker>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#3b82f6"/>
+    </marker>
+    <linearGradient id="g-start" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e2e8f0"/><stop offset="100%" stop-color="#cbd5e1"/>
+    </linearGradient>
+    <linearGradient id="g-node" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#dbeafe"/><stop offset="100%" stop-color="#bfdbfe"/>
+    </linearGradient>
+    <linearGradient id="g-diamond" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fef3c7"/><stop offset="100%" stop-color="#fde68a"/>
+    </linearGradient>
+    <linearGradient id="g-end" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fce4ec"/><stop offset="100%" stop-color="#fbc4cd"/>
+    </linearGradient>
+    <linearGradient id="g-box" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f1f5f9"/><stop offset="100%" stop-color="#e2e8f0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Title -->
+  <text x="600" y="40" text-anchor="middle" font-size="20" font-weight="bold" fill="#1e293b">RecruitAgent — LangGraph 全流程状态机</text>
+  <text x="600" y="62" text-anchor="middle" font-size="13" fill="#64748b">12 个状态节点 · 8 个条件路由 · 4 个阶段子图</text>
+
+  <!-- Phase box: 需求与JD -->
+  <rect x="40" y="80" width="1120" height="280" rx="12" fill="none" stroke="#818cf8" stroke-width="2" stroke-dasharray="6,4"/>
+  <rect x="40" y="80" width="140" height="28" rx="6" fill="#818cf8"/>
+  <text x="110" y="99" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">📋 需求与 JD</text>
+
+  <!-- Phase box: 简历筛选 -->
+  <rect x="40" y="390" width="1120" height="280" rx="12" fill="none" stroke="#818cf8" stroke-width="2" stroke-dasharray="6,4"/>
+  <rect x="40" y="390" width="140" height="28" rx="6" fill="#818cf8"/>
+  <text x="110" y="409" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">📄 简历筛选</text>
+
+  <!-- Phase box: 面试管理 -->
+  <rect x="40" y="700" width="1120" height="340" rx="12" fill="none" stroke="#818cf8" stroke-width="2" stroke-dasharray="6,4"/>
+  <rect x="40" y="700" width="140" height="28" rx="6" fill="#818cf8"/>
+  <text x="110" y="719" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">🎙️ 面试管理</text>
+
+  <!-- Phase box: Offer与入职 -->
+  <rect x="40" y="1070" width="1120" height="280" rx="12" fill="none" stroke="#818cf8" stroke-width="2" stroke-dasharray="6,4"/>
+  <rect x="40" y="1070" width="170" height="28" rx="6" fill="#818cf8"/>
+  <text x="125" y="1089" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">💰 Offer &amp; 入职</text>
+
+
+  <!-- ============ NODES ============ -->
+
+  <!-- Start -->
+  <ellipse cx="600" cy="120" rx="55" ry="22" fill="url(#g-start)" stroke="#64748b" stroke-width="1.5"/>
+  <text x="600" y="125" text-anchor="middle" font-size="14" font-weight="bold" fill="#334155">开始</text>
+
+  <!-- 需求收集 -->
+  <polygon points="600,195 560,230 600,265 640,230" fill="url(#g-diamond)" stroke="#d97706" stroke-width="1.5"/>
+  <text x="600" y="234" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e">需求收集</text>
+
+  <!-- R1 -->
+  <polygon points="850,195 810,230 850,265 890,230" fill="url(#g-diamond)" stroke="#d97706" stroke-width="1.5"/>
+  <text x="850" y="234" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e">已澄清?</text>
+
+  <!-- JD生成 -->
+  <rect x="425" y="300" width="130" height="44" rx="8" fill="url(#g-node)" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="490" y="318" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e40af">JD 生成</text>
+  <text x="490" y="335" text-anchor="middle" font-size="10" fill="#3b82f6">jd_generation</text>
+
+  <!-- JD审核 -->
+  <rect x="750" y="300" width="130" height="44" rx="8" fill="url(#g-node)" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="815" y="318" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e40af">JD 审核</text>
+  <text x="815" y="335" text-anchor="middle" font-size="10" fill="#3b82f6">jd_review</text>
+
+  <!-- R2 -->
+  <polygon points="1000,195 960,230 1000,265 1040,230" fill="url(#g-diamond)" stroke="#d97706" stroke-width="1.5"/>
+  <text x="1000" y="234" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e">通过?</text>
+
+  <!-- 简历收集 -->
+  <polygon points="350,430 310,465 350,500 390,465" fill="url(#g-diamond)" stroke="#d97706" stroke-width="1.5"/>
+  <text x="350" y="469" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e">简历收集</text>
+
+  <!-- R3 -->
+  <polygon points="600,430 560,465 600,500 640,465" fill="url(#g-diamond)" stroke="#d97706" stroke-width="1.5"/>
+  <text x="600" y="469" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e">有简历?</text>
+
+  <!-- AI初筛 -->
+  <rect x="425" y="540" width="130" height="44" rx="8" fill="url(#g-node)" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="490" y="558" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e40af">AI 初筛评分</text>
+  <text x="490" y="575" text-anchor="middle" font-size="10" fill="#3b82f6">resume_ai_screen</text>
+
+  <!-- 人工复筛 -->
+  <rect x="720" y="540" width="130" height="44" rx="8" fill="url(#g-node)" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="785" y="558" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e40af">人工复筛</text>
+  <text x="785" y="575" text-anchor="middle" font-size="10" fill="#3b82f6">resume_manual_screen</text>
+
+  <!-- R4 -->
+  <polygon points="1000,430 960,465 1000,500 1040,465" fill="url(#g-diamond)" stroke="#d97706" stroke-width="1.5"/>
+  <text x="1000" y="462" text-anchor="middle" font-size="12" font-weight="bold" fill="#92400e">有候选</text>
+  <text x="1000" y="476" text-anchor="middle" font-size="12" font-weight="bold" fill="#92400e">人?</text>
+
+  <!-- 面试安排 -->
+  <polygon points="350,745 310,780 350,815 390,780" fill="url(#g-diamond)" stroke="#d97706" stroke-width="1.5"/>
+  <text x="350" y="784" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e">面试安排</text>
+
+  <!-- R5 -->
+  <polygon points="610,745 570,780 610,815 650,780" fill="url(#g-diamond)" stroke="#d97706" stroke-width="1.5"/>
+  <text x="610" y="784" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e">已安排?</text>
+
+  <!-- AI出题 -->
+  <rect x="425" y="860" width="130" height="44" rx="8" fill="url(#g-node)" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="490" y="878" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e40af">AI 智能出题</text>
+  <text x="490" y="895" text-anchor="middle" font-size="10" fill="#3b82f6">interview_questions</text>
+
+  <!-- 面试执行 -->
+  <rect x="620" y="860" width="130" height="44" rx="8" fill="url(#g-node)" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="685" y="878" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e40af">面试执行</text>
+  <text x="685" y="895" text-anchor="middle" font-size="10" fill="#3b82f6">interview_execute</text>
+
+  <!-- 面试评估 -->
+  <rect x="820" y="860" width="130" height="44" rx="8" fill="url(#g-node)" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="885" y="878" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e40af">面试评估</text>
+  <text x="885" y="895" text-anchor="middle" font-size="10" fill="#3b82f6">interview_evaluate</text>
+
+  <!-- R6 -->
+  <polygon points="1050,745 1010,780 1050,815 1090,780" fill="url(#g-diamond)" stroke="#d97706" stroke-width="1.5"/>
+  <text x="1050" y="784" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e">通过?</text>
+
+  <!-- Offer管理 -->
+  <polygon points="350,1130 310,1165 350,1200 390,1165" fill="url(#g-diamond)" stroke="#d97706" stroke-width="1.5"/>
+  <text x="350" y="1169" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e">Offer 管理</text>
+
+  <!-- R7 -->
+  <polygon points="610,1130 570,1165 610,1200 650,1165" fill="url(#g-diamond)" stroke="#d97706" stroke-width="1.5"/>
+  <text x="610" y="1169" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e">已接受?</text>
+
+  <!-- 入职管理 -->
+  <rect x="425" y="1240" width="130" height="44" rx="8" fill="url(#g-node)" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="490" y="1258" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e40af">入职管理</text>
+  <text x="490" y="1275" text-anchor="middle" font-size="10" fill="#3b82f6">onboarding</text>
+
+  <!-- R8 -->
+  <polygon points="790,1130 750,1165 790,1200 830,1165" fill="url(#g-diamond)" stroke="#d97706" stroke-width="1.5"/>
+  <text x="790" y="1169" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e">完成?</text>
+
+
+  <!-- ============ ENDS ============ -->
+  <!-- END1 -->
+  <ellipse cx="1000" cy="120" rx="40" ry="18" fill="url(#g-end)" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="1000" y="125" text-anchor="middle" font-size="12" font-weight="bold" fill="#991b1b">结束</text>
+
+  <!-- END2 -->
+  <ellipse cx="1100" cy="300" rx="40" ry="18" fill="url(#g-end)" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="1100" y="305" text-anchor="middle" font-size="12" font-weight="bold" fill="#991b1b">结束</text>
+
+  <!-- END3 -->
+  <ellipse cx="750" cy="430" rx="40" ry="18" fill="url(#g-end)" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="750" y="435" text-anchor="middle" font-size="12" font-weight="bold" fill="#991b1b">结束</text>
+
+  <!-- END4 -->
+  <ellipse cx="1100" cy="465" rx="40" ry="18" fill="url(#g-end)" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="1100" y="470" text-anchor="middle" font-size="12" font-weight="bold" fill="#991b1b">结束</text>
+
+  <!-- END5 -->
+  <ellipse cx="800" cy="745" rx="40" ry="18" fill="url(#g-end)" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="800" y="750" text-anchor="middle" font-size="12" font-weight="bold" fill="#991b1b">结束</text>
+
+  <!-- END6 -->
+  <ellipse cx="1150" cy="860" rx="40" ry="18" fill="url(#g-end)" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="1150" y="865" text-anchor="middle" font-size="12" font-weight="bold" fill="#991b1b">结束</text>
+
+  <!-- END7 -->
+  <ellipse cx="1000" cy="1165" rx="40" ry="18" fill="url(#g-end)" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="1000" y="1170" text-anchor="middle" font-size="12" font-weight="bold" fill="#991b1b">结束</text>
+
+
+  <!-- ============ EDGES ============ -->
+
+  <!-- Start → 需求收集 -->
+  <line x1="600" y1="142" x2="600" y2="193" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- 需求收集 → R1 -->
+  <line x1="640" y1="230" x2="808" y2="230" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="724" y="222" text-anchor="middle" font-size="11" fill="#64748b">已澄清?</text>
+
+  <!-- R1 → 需求收集 (no) -->
+  <line x1="600" y1="265" x2="600" y2="290" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="612" y="282" font-size="11" fill="#ef4444">否</text>
+
+  <!-- R1 → JD生成 (yes) -->
+  <line x1="850" y1="265" x2="490" y2="298" stroke="#22c55e" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="680" y="282" text-anchor="middle" font-size="11" fill="#22c55e">是</text>
+
+  <!-- R1 → END1 -->
+  <line x1="890" y1="230" x2="958" y2="132" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="900" y="180" font-size="11" fill="#ef4444">终止</text>
+
+  <!-- JD生成 → JD审核 -->
+  <line x1="555" y1="322" x2="748" y2="322" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="650" y="314" text-anchor="middle" font-size="11" fill="#3b82f6">自动</text>
+
+  <!-- JD审核 → R2 -->
+  <line x1="880" y1="322" x2="990" y2="265" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- R2 → 简历收集 (yes) -->
+  <line x1="1000" y1="265" x2="350" y2="428" stroke="#22c55e" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="675" y="346" text-anchor="middle" font-size="11" fill="#22c55e">通过</text>
+
+  <!-- R2 → JD生成 (no) -->
+  <line x1="1040" y1="230" x2="1100" y2="230" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <line x1="1100" y1="230" x2="1100" y2="298" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="1110" y="264" font-size="11" fill="#ef4444">驳回</text>
+
+  <!-- R2 → END2 -->
+  <line x1="1000" y1="265" x2="1060" y2="300" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="1026" y="286" font-size="11" fill="#ef4444">终止</text>
+
+  <!-- 简历收集 → R3 -->
+  <line x1="390" y1="465" x2="558" y2="465" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- R3 → AI初筛 (yes) -->
+  <line x1="600" y1="500" x2="490" y2="538" stroke="#22c55e" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="546" y="524" text-anchor="middle" font-size="11" fill="#22c55e">是</text>
+
+  <!-- R3 → 简历收集 (no/wait) -->
+  <line x1="350" y1="500" x2="350" y2="520" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="334" y="514" font-size="11" fill="#f59e0b">等待</text>
+
+  <!-- R3 → END3 -->
+  <line x1="640" y1="465" x2="708" y2="440" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="674" y="450" font-size="11" fill="#ef4444">终止</text>
+
+  <!-- AI初筛 → 人工复筛 -->
+  <line x1="555" y1="562" x2="718" y2="562" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="636" y="554" text-anchor="middle" font-size="11" fill="#3b82f6">自动</text>
+
+  <!-- 人工复筛 → R4 -->
+  <line x1="850" y1="562" x2="960" y2="500" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- R4 → 面试安排 (yes) -->
+  <line x1="1000" y1="500" x2="350" y2="743" stroke="#22c55e" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="675" y="622" text-anchor="middle" font-size="11" fill="#22c55e">有候选人</text>
+
+  <!-- R4 → END4 (no) -->
+  <line x1="1040" y1="465" x2="1058" y2="465" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="1072" y="462" font-size="11" fill="#ef4444">无人通过</text>
+
+  <!-- 面试安排 → R5 -->
+  <line x1="390" y1="780" x2="568" y2="780" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- R5 → AI出题 (yes) -->
+  <line x1="610" y1="815" x2="490" y2="858" stroke="#22c55e" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="546" y="842" text-anchor="middle" font-size="11" fill="#22c55e">是</text>
+
+  <!-- R5 → 面试安排 (no/wait) -->
+  <line x1="350" y1="815" x2="350" y2="840" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="332" y="832" font-size="11" fill="#f59e0b">等待</text>
+
+  <!-- R5 → END5 -->
+  <line x1="650" y1="780" x2="758" y2="756" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="704" y="766" font-size="11" fill="#ef4444">终止</text>
+
+  <!-- AI出题 → 面试执行 -->
+  <line x1="555" y1="882" x2="618" y2="882" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="586" y="874" text-anchor="middle" font-size="11" fill="#3b82f6">自动</text>
+
+  <!-- 面试执行 → 面试评估 -->
+  <line x1="750" y1="882" x2="818" y2="882" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="784" y="874" text-anchor="middle" font-size="11" fill="#3b82f6">自动</text>
+
+  <!-- 面试评估 → R6 -->
+  <line x1="950" y1="882" x2="1010" y2="815" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- R6 → Offer管理 (pass) -->
+  <line x1="1050" y1="815" x2="1050" y2="1040" stroke="#22c55e" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="1050" y1="1040" x2="390" y2="1128" stroke="#22c55e" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="1058" y="930" font-size="11" fill="#22c55e">通过</text>
+  <text x="720" y="1084" text-anchor="middle" font-size="11" fill="#22c55e">发 Offer</text>
+
+  <!-- R6 → 面试安排 (next round) -->
+  <line x1="1010" y1="780" x2="390" y2="780" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="700" y="772" text-anchor="middle" font-size="11" fill="#f59e0b">下一轮</text>
+
+  <!-- R6 → END6 -->
+  <line x1="1090" y1="780" x2="1110" y2="858" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="1120" y="820" font-size="11" fill="#ef4444">终止</text>
+
+  <!-- Offer管理 → R7 -->
+  <line x1="390" y1="1165" x2="568" y2="1165" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- R7 → 入职管理 (accepted) -->
+  <line x1="530" y1="1198" x2="490" y2="1238" stroke="#22c55e" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="542" y="1222" font-size="11" fill="#22c55e">已接受</text>
+
+  <!-- R7 → Offer管理 (wait) -->
+  <line x1="350" y1="1200" x2="350" y2="1220" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="328" y="1214" font-size="11" fill="#f59e0b">等待</text>
+
+  <!-- R7 → END7 (rejected) -->
+  <line x1="650" y1="1165" x2="958" y2="1165" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="804" y="1157" text-anchor="middle" font-size="11" fill="#ef4444">拒绝</text>
+
+  <!-- 入职管理 → R8 -->
+  <line x1="555" y1="1262" x2="750" y2="1200" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- R8 → END7 (completed) -->
+  <line x1="830" y1="1165" x2="958" y2="1165" stroke="#22c55e" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="894" y="1157" text-anchor="middle" font-size="11" fill="#22c55e">完成</text>
+
+  <!-- R8 → 入职管理 (in progress) -->
+  <line x1="790" y1="1200" x2="490" y2="1240" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="640" y="1225" text-anchor="middle" font-size="11" fill="#f59e0b">进行中</text>
+
+</svg>

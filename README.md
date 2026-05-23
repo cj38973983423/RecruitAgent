@@ -31,75 +31,9 @@
 
 > **12 个状态节点 · 8 个条件路由 · 4 个阶段子图** — 每个节点都是独立的工作单元，条件边驱动状态自动流转。
 
-```mermaid
-graph TD
-    START([开始]) --> 需求收集{需求收集}
-
-    subgraph 需求与JD
-        需求收集{需求收集} -->|已澄清?| R1{是否已澄清}
-        R1 -->|是| JD生成[JD生成]
-        R1 -->|否| 需求收集{需求收集}
-        R1 -->|终止| END1([结束])
-
-        JD生成[JD生成] -->|自动| JD审核[JD审核]
-
-        JD审核[JD审核] -->|状态?| R2{审核结果}
-        R2 -->|通过| 简历收集{简历收集}
-        R2 -->|驳回| JD生成[JD生成]
-        R2 -->|终止| END2([结束])
-    end
-
-    subgraph 简历筛选
-        简历收集{简历收集} -->|有简历?| R3{有简历?}
-        R3 -->|是| AI初筛[AI初筛评分]
-        R3 -->|等待| 简历收集{简历收集}
-        R3 -->|终止| END3([结束])
-
-        AI初筛[AI初筛评分] -->|自动| 人工复筛[人工复筛]
-
-        人工复筛[人工复筛] -->|有候选人?| R4{有候选人?}
-        R4 -->|是| 面试安排{面试安排}
-        R4 -->|无人通过| END4([结束])
-    end
-
-    subgraph 面试管理
-        面试安排{面试安排} -->|已安排?| R5{已安排?}
-        R5 -->|是| AI出题[AI智能出题]
-        R5 -->|等待| 面试安排{面试安排}
-        R5 -->|终止| END5([结束])
-
-        AI出题[AI智能出题] -->|自动| 面试执行[面试执行]
-
-        面试执行[面试执行] -->|自动| 面试评估[面试评估]
-
-        面试评估[面试评估] -->|结果?| R6{评估结果}
-        R6 -->|通过| Offer管理{Offer管理}
-        R6 -->|下一轮| 面试安排{面试安排}
-        R6 -->|终止| END6([结束])
-    end
-
-    subgraph Offer与入职
-        Offer管理{Offer管理} -->|状态?| R7{Offer状态}
-        R7 -->|已接受| 入职管理[入职管理]
-        R7 -->|等待| Offer管理{Offer管理}
-        R7 -->|拒绝| END7([结束])
-
-        入职管理[入职管理] -->|状态?| R8{入职状态}
-        R8 -->|完成| END7([结束])
-        R8 -->|进行中| 入职管理[入职管理]
-    end
-
-    classDef start fill:#e2e8f0,stroke:#475569
-    classDef decision fill:#fef3c7,stroke:#d97706
-    classDef node fill:#dbeafe,stroke:#3b82f6
-    classDef end fill:#fce4ec,stroke:#ef4444
-
-    class START start
-    class 需求收集,简历收集,面试安排,Offer管理 decision
-    class R1,R2,R3,R4,R5,R6,R7,R8 decision
-    class JD生成,JD审核,AI初筛,人工复筛,AI出题,面试执行,面试评估,入职管理 node
-    class END1,END2,END3,END4,END5,END6,END7 end
-```
+<p align="center">
+  <img src="screenshots/langgraph-flow.svg" alt="RecruitAgent LangGraph 全流程状态机" width="100%" style="max-width:900px;" />
+</p>
 
 <br/>
 
