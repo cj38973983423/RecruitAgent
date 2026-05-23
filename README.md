@@ -32,96 +32,72 @@
 > **12 个状态节点 · 8 个条件路由 · 4 个阶段子图** — 每个节点都是独立的工作单元，条件边驱动状态自动流转。
 
 ```mermaid
----
-title: RecruitAgent — LangGraph 全流程状态机
----
 graph TD
-    START([开始]) --> 需求收集
+    START([开始]) --> 需求收集{需求收集}
 
-    subgraph "📋 需求与 JD"
-        需求收集[需求收集<br/>requirement_collect]
-        JD生成[JD 生成<br/>jd_generation]
-        JD审核[JD 审核<br/>jd_review]
+    subgraph 需求与JD
+        需求收集{需求收集} -->|已澄清?| R1{是否已澄清}
+        R1 -->|是| JD生成[JD生成]
+        R1 -->|否| 需求收集{需求收集}
+        R1 -->|终止| END1([结束])
+
+        JD生成[JD生成] -->|自动| JD审核[JD审核]
+
+        JD审核[JD审核] -->|状态?| R2{审核结果}
+        R2 -->|通过| 简历收集{简历收集}
+        R2 -->|驳回| JD生成[JD生成]
+        R2 -->|终止| END2([结束])
     end
 
-    subgraph "📄 简历筛选"
-        简历收集[简历收集<br/>resume_collect]
-        AI初筛[AI 初筛评分<br/>resume_ai_screen]
-        人工复筛[人工复筛<br/>resume_manual_screen]
+    subgraph 简历筛选
+        简历收集{简历收集} -->|有简历?| R3{有简历?}
+        R3 -->|是| AI初筛[AI初筛评分]
+        R3 -->|等待| 简历收集{简历收集}
+        R3 -->|终止| END3([结束])
+
+        AI初筛[AI初筛评分] -->|自动| 人工复筛[人工复筛]
+
+        人工复筛[人工复筛] -->|有候选人?| R4{有候选人?}
+        R4 -->|是| 面试安排{面试安排}
+        R4 -->|无人通过| END4([结束])
     end
 
-    subgraph "🎙️ 面试管理"
-        面试安排[面试安排<br/>interview_schedule]
-        AI出题[AI 智能出题<br/>interview_questions]
-        面试执行[面试执行<br/>interview_execute]
-        面试评估[面试评估<br/>interview_evaluate]
+    subgraph 面试管理
+        面试安排{面试安排} -->|已安排?| R5{已安排?}
+        R5 -->|是| AI出题[AI智能出题]
+        R5 -->|等待| 面试安排{面试安排}
+        R5 -->|终止| END5([结束])
+
+        AI出题[AI智能出题] -->|自动| 面试执行[面试执行]
+
+        面试执行[面试执行] -->|自动| 面试评估[面试评估]
+
+        面试评估[面试评估] -->|结果?| R6{评估结果}
+        R6 -->|通过| Offer管理{Offer管理}
+        R6 -->|下一轮| 面试安排{面试安排}
+        R6 -->|终止| END6([结束])
     end
 
-    subgraph "💰 Offer & 入职"
-        Offer管理[Offer 管理<br/>offer_manage]
-        入职管理[入职管理<br/>onboarding]
+    subgraph Offer与入职
+        Offer管理{Offer管理} -->|状态?| R7{Offer状态}
+        R7 -->|已接受| 入职管理[入职管理]
+        R7 -->|等待| Offer管理{Offer管理}
+        R7 -->|拒绝| END7([结束])
+
+        入职管理[入职管理] -->|状态?| R8{入职状态}
+        R8 -->|完成| END7([结束])
+        R8 -->|进行中| 入职管理[入职管理]
     end
 
-    END1([结束]) & END2([结束]) & END3([结束]) & END4([结束]) & END5([结束]) & END6([结束]) & END7([结束])
-
-    %% ── 需求阶段 ──
-    需求收集 -->|"is_clarified?"| R1{是否已澄清?}
-    R1 -->|"✅ 是"| JD生成
-    R1 -->|"❌ 否"| 需求收集
-    R1 -->|"⛔ 终止"| END1
-
-    JD生成 -->|自动| JD审核
-
-    JD审核 -->|"jd_status?"| R2{审核结果?}
-    R2 -->|"✅ approved"| 简历收集
-    R2 -->|"🔄 rejected"| JD生成
-    R2 -->|"⛔ 终止"| END2
-
-    %% ── 简历阶段 ──
-    简历收集 -->|"has_resumes?"| R3{有简历?}
-    R3 -->|"✅ 是"| AI初筛
-    R3 -->|"🔄 等待"| 简历收集
-    R3 -->|"⛔ 终止"| END3
-
-    AI初筛 -->|自动| 人工复筛
-
-    人工复筛 -->|"has_candidates?"| R4{有候选人?}
-    R4 -->|"✅ 是"| 面试安排
-    R4 -->|"⛔ 无人通过"| END4
-
-    %% ── 面试阶段 ──
-    面试安排 -->|"ready?"| R5{已安排?}
-    R5 -->|"✅ 是"| AI出题
-    R5 -->|"🔄 等待"| 面试安排
-    R5 -->|"⛔ 终止"| END5
-
-    AI出题 -->|自动| 面试执行
-
-    面试执行 -->|自动| 面试评估
-
-    面试评估 -->|"result?"| R6{评估结果}
-    R6 -->|"✅ 通过 → Offer"| Offer管理
-    R6 -->|"🔄 下一轮面试"| 面试安排
-    R6 -->|"⛔ 终止"| END6
-
-    %% ── Offer 阶段 ──
-    Offer管理 -->|"offer_status?"| R7{Offer 状态}
-    R7 -->|"✅ accepted"| 入职管理
-    R7 -->|"🔄 等待回复"| Offer管理
-    R7 -->|"❌ rejected"| END7
-
-    入职管理 -->|"onboarding_status?"| R8{入职状态}
-    R8 -->|"✅ completed"| END7
-    R8 -->|"🔄 进行中"| 入职管理
-
-    %% 样式
-    classDef start fill:#e2e8f0,stroke:#64748b,color:#1e293b
-    classDef decision fill:#fef3c7,stroke:#f59e0b,color:#92400e
-    classDef end fill:#fce4ec,stroke:#ef4444,color:#991b1b
-    classDef phase fill:none,stroke:#6366f1,stroke-width:2,stroke-dasharray: 5 5
+    classDef start fill:#e2e8f0,stroke:#475569
+    classDef decision fill:#fef3c7,stroke:#d97706
+    classDef node fill:#dbeafe,stroke:#3b82f6
+    classDef end fill:#fce4ec,stroke:#ef4444
 
     class START start
+    class 需求收集,简历收集,面试安排,Offer管理 decision
     class R1,R2,R3,R4,R5,R6,R7,R8 decision
+    class JD生成,JD审核,AI初筛,人工复筛,AI出题,面试执行,面试评估,入职管理 node
     class END1,END2,END3,END4,END5,END6,END7 end
 ```
 
